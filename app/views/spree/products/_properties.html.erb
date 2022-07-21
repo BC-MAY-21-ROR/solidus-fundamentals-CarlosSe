@@ -1,0 +1,11 @@
+<% unless @product_properties.empty? %>
+  <h6 class="fw-bold text-center"><%= t('spree.properties')%></h6>
+  <ul id="product-properties" class="list-group list-group-flush" data-hook>
+      <% @product_properties.each do |product_property| %>
+        <li class="list-group-item">
+          <strong><%= product_property.property.presentation %>: </strong><%= product_property.value %>
+        </li>
+      <% end %>
+      <% reset_cycle('properties') %>
+  </ul>
+<% end %>
