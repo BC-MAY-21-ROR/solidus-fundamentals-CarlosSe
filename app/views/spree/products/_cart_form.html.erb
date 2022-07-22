@@ -1,0 +1,82 @@
+<%= form_for :order, url: populate_orders_path do |f| %>
+<div id="inside-product-cart-form" data-hook="inside_product_cart_form" itemprop="offers" itemscope
+    itemtype="http://schema.org/Offer">
+
+    <% if @product.price_for_options(current_pricing_options) and !@product.price.nil? %>
+    <div data-hook="product_price" class="columns five <%= !@product.has_variants? ? 'alpha' : 'omega' %>">
+
+        <div id="product-price">
+            <h6 class="visually-hidden"><%= t('spree.price') %></h6>
+            <div class="my-3">
+                <span class="display-6 py-3" itemprop="price"
+                    content="<%= @product.price_for_options(current_pricing_options).amount %>">
+                    <%= display_price(@product) %>
+                </span>
+                <span itemprop="priceCurrency" content="<%= current_pricing_options.currency %>"></span>
+            </div>
+
+            <% if @product.master.can_supply? %>
+            <link itemprop="availability" href="http://schema.org/InStock" />
+            <% elsif @product.variants.empty? %>
+            <br />
+            <span class="out-of-stock"><%= t('spree.out_of_stock') %></span>
+            <% end %>
+        </div>
+
+        <div class="accordion accordion-flush mt-5 mb-3" id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed bg-white" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        Details
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse mt-4" aria-labelledby="flush-headingOne"
+                    data-bs-parent="#accordionFlushExample">
+                    <div data-hook="product_properties">
+                        <%= render partial: 'properties' %>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <% if @product.variants_and_option_values_for(current_pricing_options).any? %>
+        <div id="product-variants" class="mb-2">
+            <div class="form-floating">
+                <select class="form-select" name="variant_id" id="floatingVariant">
+                    <% @product.variants_and_option_values_for(current_pricing_options).each_with_index do |variant, index| %>
+                    <option value="<%= index %>">
+                        <%= variant_options variant %>
+                        <% if variant_price variant %>
+                        <span class="price diff"><%= variant_price variant %></span>
+                        <% end %>
+
+                        <% unless variant.can_supply? %>
+                        <span class="out-of-stock"><%= t('spree.out_of_stock') %></span>
+                        <% end %>
+                    </option>
+                    <% end %>
+                </select>
+                <label for="floatingVariant"><%= t('spree.variants') %></label>
+            </div>
+        </div>
+        <% else %>
+        <%= hidden_field_tag "variant_id", @product.master.id %>
+        <% end %>
+
+        <div class="input-group">
+            <%= number_field_tag :quantity, 1, class: 'form-control', min: 1 %>
+            <%= button_tag class: 'btn btn-dark', id: 'add-to-cart-button', type: :submit do %>
+            <%= t('spree.add_to_cart') %>
+            <% end %>
+        </div>
+    </div>
+    <% else %>
+    <div id="product-price">
+        <br>
+        <div><span class="price selling"
+                itemprop="price"><%= t('spree.product_not_available_in_this_currency') %></span></div>
+    </div>
+    <% end %>
+</div>
+<% end %>
