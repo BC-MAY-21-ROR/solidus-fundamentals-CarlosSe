@@ -1,0 +1,17 @@
+<div class="form-floating">
+  <%= f.email_field :email, class: 'form-control' %>
+  <%= f.label :email, t('spree.email') %><br />
+</div>
+<div id="password-credentials">
+  <div class="form-floating">
+    <%= f.password_field :password, class: 'form-control' %>
+    <%= f.label :password, t('spree.password') %><br />
+  </div>
+
+  <div class="form-floating">
+    <%= f.password_field :password_confirmation, class: 'form-control' %>
+    <%= f.label :password_confirmation, t('spree.confirm_password') %><br />
+  </div>
+</div>
+
+<div data-hook="signup_below_password_fields"></div>

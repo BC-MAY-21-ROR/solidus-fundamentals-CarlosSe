@@ -1,0 +1,29 @@
+<% @body_id = 'signup' %>
+
+<div class="container-fluid p-0 m-0">
+  <div class="image-container">
+    <div class="wrap-image">
+      <div class="form-container">
+        <figure id="logo" class="d-flex justify-content-center" data-hook><%= logo img_options: { class: 'img-responsive my-auto mx-auto', width: '250'} %></figure>
+        <h4 class="py-4 text-dark text-center"><%= t('spree.new_customer') %></h4>
+        <%= render 'spree/shared/error_messages', target: resource %>
+
+        <div data-hook="signup">
+          <%= form_for resource, as: :spree_user, url: spree.registration_path(resource) do |f| %>
+          <div data-hook="signup_inside_form">
+            <%= render partial: 'spree/shared/user_form', locals: { f: f } %>
+            <p><%= f.submit t('spree.create'), class: 'btn btn-dark w-100' %></p>
+          </div>
+          <% end %>
+          <%= link_to t('spree.login_as_existing'), spree.login_path, class: 'text-dark' %>
+
+        </div>
+      </div>
+      <div class="img-container overlay-gradient-bottom"
+        style="background-image: url('https://images.unsplash.com/photo-1599420186946-7b6fb4e297f0?ixlib=rb-1.2.1&ixid=MnwxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=387&q=80');">
+      </div>
+    </div>
+  </div>
+</div>
+
+<div data-hook="login_extras"></div>
