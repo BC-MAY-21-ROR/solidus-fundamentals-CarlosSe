@@ -1,0 +1,28 @@
+<div class="container">
+    <div class="row d-flex justify-content-center align-items-center vh-100">
+        <div class="col-12 col-md-4 d-flex justify-content-center">
+            <%= render partial: 'spree/user_sessions/login' %>
+        </div>
+        <div class="col-12 col-md-4">
+            <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
+                  class="img-fluid" alt="Sample image">
+        </div>
+        <div class="col-12 col-md-4 d-flex justify-content-center">
+        <% if Spree::Config[:allow_guest_checkout] %>
+            <div id="guest_checkout" data-hook class="columns omega eight">
+            <h5 class="lead text-center"><%= t('spree.guest_user_account') %></h5>
+            <% if flash[:registration_error] %>
+                <div class='flash error'><%= flash[:registration_error] %></div>
+            <% end %>
+            <%= form_for @order, url: update_checkout_registration_path, method: :put, html: { id: 'checkout_form_registration' } do |f| %>
+                <div class="form-floating">
+                    <%= f.email_field :email, class: 'form-control' %>
+                    <%= f.label :email, t('spree.email') %><br />
+                </div>
+                <div><%= f.submit t('spree.continue'), class: 'btn btn-dark btn-block w-100' %></div>
+            <% end %>
+            </div>
+        <% end %>
+        </div>
+    </div>
+</div>
